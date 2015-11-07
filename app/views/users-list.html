@@ -1,0 +1,73 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h1 class="panel-title"><i class="glyphicon glyphicon-user"></i> Users</h1>
+    </div>
+    <div class="panel-body">
+        <div class="well">
+            <button class="btn btn-primary" ng-click="usersList.showUserModal({})"><i class="glyphicon glyphicon-plus-sign"></i> Create User</button>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Is Admin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in usersList.users track by $index">
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <input type="checkbox" ng-checked="user.is_admin">
+                    </td>
+                    <td>
+                        <button class="btn btn-default" ng-click="usersList.showUserModal(user)"><i class="glyphicon glyphicon-pencil"></i></button>
+                        <button class="btn btn-danger" ng-click="usersList.removeUser(user)"><i class="glyphicon glyphicon-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/ng-template" id="userModal.html">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title" ng-if="!user.id">Create a new user</h3>
+            <h3 class="panel-title" ng-if="user.id">Editing user {{user.name}}</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="name" id="name" ng-model="user.name" placeholder="Full Name">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" name="email" id="email" ng-model="user.email" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="password" class="form-control" name="password" id="password" ng-model="user.password" placeholder="Password">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" ng-model="user.password_confirmation" placeholder="Password Confirmation">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="is_admin" class="col-md-2 control-label">
+                        Is Admin?
+                    </label>
+                    <div class="col-md-6">
+                        <input type="checkbox" id="is_admin" name="is_admin" ng-model="user.is_admin">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script>

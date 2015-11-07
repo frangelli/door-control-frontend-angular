@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="well">
+        <button class="btn btn-primary" ng-click="doorsList.showDoorModal({})"><i class="glyphicon glyphicon-plus-sign"></i> New Door</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3" ng-repeat="door in doorsList.doors">
+        <div class="door-container well">
+            <div class="col-md-12 text-center">
+                <span class="door-title">{{door.title}}</span>
+                <p class="door-description">{{door.description}}</p>
+                <div class="status-indicator label-success" ng-if="!door.is_open"><i class="fa fa-lock"></i></div>
+                <div class="status-indicator label-danger" ng-if="door.is_open"><i class="fa fa-unlock"></i></div>
+            </div>
+            <div class="door-managment col-md-12 text-center" ng-if="main.currentUser.is_admin">
+                <button class="btn btn-link" ng-click="doorsList.showPermissionsModal(door)"><i class="fa fa-users"></i></button>
+                <button class="btn btn-link" ng-click="doorsList.showDoorModal(door)"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-link" ng-click="doorsList.removeDoor(door)"><i class="fa fa-trash"></i></button>
+            </div>
+            <div class="door-actions col-md-12 text-center">
+                <button class="btn btn-default" ng-disabled="!doorsList.userHasAccess(door)" ng-click="doorsList.toggleDoorStatus(door)" ng-if="!door.is_open"><i class="fa fa-unlock"></i> Open</button>
+                <button class="btn btn-default" ng-disabled="!doorsList.userHasAccess(door)" ng-click="doorsList.toggleDoorStatus(door)" ng-if="door.is_open"><i class="fa fa-lock"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- MODALS -->
+<script type="text/ng-template" id="doorModal.html">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title" ng-if="!door.id">Create a new door</h3>
+            <h3 class="panel-title" ng-if="door.id">Editing door {{door.title}}</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" name="title" id="title" ng-model="door.title" placeholder="Door's title">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <textarea class="form-control" name="description" id="description" ng-model="door.description" placeholder="Door's description"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="is_open" class="col-md-2 control-label">
+                        Is Open?
+                    </label>
+                    <div class="col-md-6">
+                        <input type="checkbox" id="is_open" name="is_open" ng-model="door.is_open">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="permissionsModal.html">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Users with access to {{door.title}}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-5">
+                <select name="available_users" class="form-control" multiple ng-model="available_users" ng-options="u as u.name for u in users track by u.id">
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button ng-click="addUsersToDoor()" class="btn btn-primary btn-block"><i class="fa fa-arrow-right"></i></button>
+                <button ng-click="removeUsersFromDoor()" class="btn btn-danger btn-block"><i class="fa fa-arrow-left"></i></button>
+            </div>
+            <div class="col-md-5">
+                <select name="available_users" class="form-control" multiple ng-model="selected_users" ng-options="su as su.name for su in door.users track by su.id">
+                </select>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script>

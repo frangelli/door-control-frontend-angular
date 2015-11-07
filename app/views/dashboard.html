@@ -1,0 +1,10 @@
+<div class="well col-md-12">
+    <table class="table table-condensed">
+        <tbody>
+            <tr ng-repeat="activity in dashboard.activities track by $index">
+                <td>{{activity.created_at | date: 'medium'}}</td>
+                <td>{{activity.text}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
