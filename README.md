@@ -14,3 +14,8 @@ Run `grunt serve` for preview with live reload.
 
 Run `grunt build` for generate a production ready version
 
+# API
+
+This app runs together with an API that can be found on this repository:
+`https://github.com/frangelli/door-control-api-rails` 
+
